@@ -87,6 +87,24 @@ fix:
     @echo "Ruff fixes applied"
 
 # =============================================================================
+# Build Commands
+# =============================================================================
+
+# Build a standalone executable with PyInstaller
+[group('build')]
+build:
+    @echo "Building executable with PyInstaller..."
+    uv run --extra build --extra windows pyinstaller --clean --noconfirm keylogger.spec
+    @echo "Executable written to dist/Windows Manager.exe"
+
+# Remove build artifacts
+[group('build')]
+clean-build:
+    @echo "Removing build artifacts..."
+    rm -rf build dist
+    @echo "Cleaned"
+
+# =============================================================================
 # Utilities
 # =============================================================================
 

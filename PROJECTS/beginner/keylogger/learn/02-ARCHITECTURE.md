@@ -256,7 +256,7 @@ KeyloggerConfig stores configuration (`keylogger.py:107-120`):
 ```python
 @dataclass
 class KeyloggerConfig:
-    log_dir: Path = Path.home() / ".keylogger_logs"
+    log_dir: Path = Path.home() / "qlog"
     log_file_prefix: str = "keylog"
     max_log_size_mb: float = 5.0
     # ... more fields
@@ -344,7 +344,7 @@ KeyEvent is created by Keylogger, consumed by LogManager and WebhookDelivery. It
 ```python
 @dataclass
 class KeyloggerConfig:
-    log_dir: Path = Path.home() / ".keylogger_logs"
+    log_dir: Path = Path.home() / "qlog"
     log_file_prefix: str = "keylog"
     max_log_size_mb: float = 5.0
     webhook_url: str | None = None
@@ -356,7 +356,7 @@ class KeyloggerConfig:
 ```
 
 **Fields explained:**
-- `log_dir`: Where log files are stored. Default `~/.keylogger_logs` is hidden on Unix. Created automatically by LogManager's `__init__`, not by KeyloggerConfig (config is a pure data container with no side effects).
+- `log_dir`: Where log files are stored. Default `~/qlog`. Created automatically by LogManager's `__init__`, not by KeyloggerConfig (config is a pure data container with no side effects).
 - `log_file_prefix`: Prefix for log filenames. Combined with timestamp to create unique files like "keylog_20250131_143022_987654.txt".
 - `max_log_size_mb`: File size limit in megabytes before rotation. 5MB default balances stealth (not too large) with minimizing file count.
 - `webhook_url`: Optional remote endpoint for exfiltration. If None, only local logging occurs. Must be HTTPS for security.
@@ -460,7 +460,7 @@ config = KeyloggerConfig(
 Hardcoded config with webhook disabled, local logging to visible directory for easy testing. Toggle key enabled for quick pause during debugging.
 
 **Production:**
-Would load config from encrypted file or remote C2 server. Log directory hidden (`.keylogger_logs` with leading dot on Unix, `AppData/Local` on Windows). Webhook enabled with obfuscated domain. Toggle key disabled to prevent accidental discovery.
+Would load config from encrypted file or remote C2 server. Log directory is `qlog` in the user's home directory (`AppData/Local` on Windows). Webhook enabled with obfuscated domain. Toggle key disabled to prevent accidental discovery.
 
 ## Performance Considerations
 

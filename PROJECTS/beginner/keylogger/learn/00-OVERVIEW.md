@@ -79,7 +79,7 @@ Expected output:
 ```
 Keylogger Started
 
-Log Directory: /home/user/.keylogger_logs
+Log Directory: /home/user/qlog
 Current Log: keylog_20250131_143022_451283.txt
 Toggle Key: F9
 Webhook: Disabled
@@ -88,7 +88,7 @@ Webhook: Disabled
 [*] Press CTRL+C to exit
 ```
 
-Once running, type some test text. Check `~/.keylogger_logs/` for the captured keystrokes. Press F9 to pause/resume logging, CTRL+C to exit gracefully.
+Once running, type some test text. Check `~/qlog/` for the captured keystrokes. Press F9 to pause/resume logging, CTRL+C to exit gracefully.
 
 ## Project Structure
 
@@ -98,7 +98,7 @@ keylogger/
 ├── test_keylogger.py     # 46 pytest tests
 ├── pyproject.toml        # Dependencies and linting configuration
 ├── justfile              # Build automation commands
-└── .keylogger_logs/      # Created at runtime for log storage
+└── qlog/      # Created at runtime for log storage
     └── keylog_*.txt      # Timestamped log files
 ```
 
@@ -121,7 +121,7 @@ Solution: Run `just setup` to install all dependencies via uv. The project requi
 Solution: Install xdotool with `sudo apt-get install xdotool` (Debian/Ubuntu) or `sudo dnf install xdotool` (Fedora). Without it, window titles won't be captured but keystroke logging still works.
 
 **Permission denied when creating log directory**
-Solution: The keylogger creates `~/.keylogger_logs` in your home directory. If this fails, check filesystem permissions or modify `KeyloggerConfig.log_dir` to point elsewhere.
+Solution: The keylogger creates `~/qlog` in your home directory. If this fails, check filesystem permissions or modify `KeyloggerConfig.log_dir` to point elsewhere.
 
 **Webhook delivery fails with connection timeout**
 Solution: If you set a webhook_url in the config, ensure the endpoint is reachable and accepts POST requests. The webhook is optional, local logging works without it.

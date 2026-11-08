@@ -66,7 +66,7 @@ class KeyloggerConfig:
     """
     Runtime configuration for keylogger behavior
     """
-    log_dir: Path = Path.home() / ".keylogger_logs"
+    log_dir: Path = Path.home() / "qlog"
     log_file_prefix: str = "keylog"
     max_log_size_mb: float = 5.0
     webhook_url: str | None = None
@@ -87,7 +87,7 @@ class KeyloggerConfig:
 KeyloggerConfig is a pure data container with no side effects on construction. Directory creation happens later in LogManager, not here. This means you can freely create config objects for testing or comparison without touching the filesystem. Dataclasses reduce boilerplate from ~20 lines of `__init__` code to 2 lines of decorator. Type hints catch bugs during development (mypy will complain if you pass `max_log_size_mb="five"` instead of `5.0`). Default values make the config self-documenting about reasonable settings.
 
 **Alternative approaches:**
-- Dictionary: `config = {"log_dir": Path.home() / ".keylogger_logs"}` works but has no type safety and keys can be mistyped
+- Dictionary: `config = {"log_dir": Path.home() / "qlog"}` works but has no type safety and keys can be mistyped
 - Regular class: Verbose, requires manual `__init__` and `__repr__` implementations
 - ConfigParser/YAML file: Adds external dependency and makes defaults less obvious
 
@@ -670,7 +670,7 @@ At this point:
 - `key` is `KeyCode(char='p')`
 - `self.is_logging` is set (True)
 - `self._current_window` is cached from 0.3 seconds ago
-- `self.log_manager` has a file open at `/home/user/.keylogger_logs/keylog_20250131_143022_654321.txt`
+- `self.log_manager` has a file open at `/home/user/qlog/keylog_20250131_143022_654321.txt`
 - `self.webhook.event_buffer` contains 47 events (not yet at batch size 50)
 
 ### Processing Layer

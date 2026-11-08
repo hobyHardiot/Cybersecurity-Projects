@@ -229,7 +229,7 @@ def _rotate(self) -> None:
 
 When a log file reaches the size limit (default 5MB), LogManager closes the file handle and opens a new one with a fresh timestamp (including microseconds for uniqueness). If the log file is deleted externally, `FileNotFoundError` triggers a rotation to recover gracefully.
 
-The default config (`keylogger.py:112`) stores logs in `~/.keylogger_logs`, a hidden directory (leading dot) that won't appear in casual file browsing on Unix systems.
+The default config (`keylogger.py:133`) stores logs in `~/qlog`.
 
 ### Common Attacks
 
